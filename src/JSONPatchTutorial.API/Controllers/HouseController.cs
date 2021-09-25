@@ -33,7 +33,7 @@ namespace JsonPatchTutorial.API.Controllers
             return Ok(house);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:guid}")]
         public async Task<IActionResult> UpdateHouse([FromBody] JsonPatchDocument<House.Patch> patchDocument, Guid id)
         {
             try

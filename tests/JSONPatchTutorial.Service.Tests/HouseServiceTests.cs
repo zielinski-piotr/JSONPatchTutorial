@@ -146,7 +146,7 @@ namespace JSONPatchTutorial.Service.Tests
 
         [Fact]
         public async Task
-            UpdateHouse_Should_Trow_ArgumentNullException_When_Replacing_Value_On_Property_Of_Composed_Object_Which_Is_Null()
+            UpdateHouse_Should_Throw_JsonPatchException_When_Replacing_Value_On_Property_Of_Composed_Object_Which_Is_Null()
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
@@ -170,7 +170,7 @@ namespace JSONPatchTutorial.Service.Tests
 
         [Fact]
         public async Task
-            UpdateHouse_Should_Throw_ArgumentNullException_When_Adding_Value_On_Property_Of_Composed_Object_Which_Is_Null()
+            UpdateHouse_Should_Throw_JsonPatchException_When_Adding_Value_On_Property_Of_Composed_Object_Which_Is_Null()
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())

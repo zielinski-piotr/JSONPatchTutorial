@@ -16,7 +16,7 @@ namespace JsonPatchTutorial.API
     public class Startup
     {
         private readonly string _connectionString;
-        private readonly SqliteConnection _keepAliveConnection ;
+        private readonly SqliteConnection _keepAliveConnection;
 
         public Startup()
         {
@@ -27,9 +27,8 @@ namespace JsonPatchTutorial.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson();
-            
+            services.AddControllers().AddNewtonsoftJson();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "JSONPatchTutorial.API", Version = "v1" });

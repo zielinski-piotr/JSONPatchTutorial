@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using JSONPatchTutorial.Contract.Requests;
@@ -8,7 +7,6 @@ using JSONPatchTutorial.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using DataModelHouse = JSONPatchTutorial.Domain.House;
-using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
 namespace JSONPatchTutorial.Service
 {
@@ -36,7 +34,7 @@ namespace JSONPatchTutorial.Service
             var apiModelHouse = _mapper.Map<House.Patch>(dataModelHouse);
 
             patch.ApplyTo(apiModelHouse);
-            
+
             _mapper.Map(apiModelHouse, dataModelHouse);
 
             _repository.Update(dataModelHouse);
