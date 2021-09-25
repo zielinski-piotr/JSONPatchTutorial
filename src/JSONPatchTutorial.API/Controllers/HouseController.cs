@@ -13,19 +13,19 @@ namespace JsonPatchTutorial.API.Controllers
     public class HouseController : ControllerBase
     {
         private readonly IHouseService _houseService;
-        
+
         public HouseController(IHouseService houseService)
         {
             _houseService = houseService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetHouses()
         {
             var houses = await _houseService.GetHouses();
             return Ok(houses);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHouseById(Guid id)
         {
@@ -36,6 +36,9 @@ namespace JsonPatchTutorial.API.Controllers
         [HttpPatch("{id:guid}")]
         public async Task<IActionResult> UpdateHouse([FromBody] JsonPatchDocument<House.Patch> patchDocument, Guid id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             try
             {
                 await _houseService.UpdateHouse(patchDocument, id);
