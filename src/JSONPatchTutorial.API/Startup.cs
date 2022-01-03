@@ -32,6 +32,7 @@ namespace JsonPatchTutorial.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "JSONPatchTutorial.API", Version = "v1" });
+                c.CustomSchemaIds(x => x.FullName);
             });
 
             services.AddDbContext<JsonPatchDbContext>(
@@ -52,7 +53,11 @@ namespace JsonPatchTutorial.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JSONPatchTutorial.API v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "JSONPatchTutorial.API v1");
+                    c.RoutePrefix = string.Empty;
+                });
             }
 
             app.UseHttpsRedirection();
@@ -69,7 +74,7 @@ namespace JsonPatchTutorial.API
             services.AddSingleton(_ => new MapperConfiguration(c => { c.AddProfile<MapperProfile>(); }).CreateMapper());
         }
 
-        private string GenerateDbName()
+        private static string GenerateDbName()
         {
             var random = new Random();
 

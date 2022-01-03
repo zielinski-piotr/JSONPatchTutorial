@@ -23,5 +23,13 @@ namespace JSONPatchTutorial.Data
             => _context.Update(entity);
 
         public Task SaveChangesAsync() => _context.SaveChangesAsync();
+
+        public void Remove<TEntity>(TEntity entity)
+            where TEntity : class
+            => _context.Remove(entity);
+
+        public async Task Add<TEntity>(TEntity entity)
+            where TEntity : class
+            => await _context.AddAsync(entity);
     }
 }

@@ -15,6 +15,8 @@ namespace JSONPatchTutorial.Service
             CreateMap<DataModelHouse, Contract.Requests.House.Patch>().ReverseMap();
             CreateMap<DataModelAddress, Address.Response>();
             CreateMap<DataModelAddress, Contract.Requests.Address.Patch>().ReverseMap();
+            CreateMap<Contract.Requests.House.Update, DataModelHouse>().ReverseMap();
+            CreateMap<Contract.Requests.House.Request, DataModelHouse>();
             CreateMap<DataModelRoom, Room.ListItem>();
             CreateMap<DataModelRoom, Contract.Requests.Room.Patch>().ReverseMap();
         }

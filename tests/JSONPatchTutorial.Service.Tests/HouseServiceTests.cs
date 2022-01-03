@@ -191,5 +191,198 @@ namespace JSONPatchTutorial.Service.Tests
                 x.Update(It.IsAny<DataModelHouse>()), Times.Never);
             _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
         }
+
+        [Fact]
+        public async Task UpdateHouse_Should_Throw_KeyNotFoundException_When_Updating_Not_Existing_Entity()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
+
+            var update = new House.Update()
+            {
+                Area = 5,
+                Color = "Brown",
+                Name = "SomeNewName"
+            };
+
+            //Act + Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+                await _houseService.UpdateHouse(update, Guid.NewGuid()));
+
+            _repository.Verify(x => x.Get<DataModelHouse>());
+            _repository.Verify(x =>
+                x.Update(It.IsAny<DataModelHouse>()), Times.Never);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
+        }
+
+        [Fact]
+        public async Task UpdateHouse_Should_Throw_ArgumentNullException_When_Update_Definition_Null()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
+
+            //Act + Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+                await _houseService.UpdateHouse((House.Update)null, Guid.NewGuid()));
+
+            _repository.Verify(x => x.Get<DataModelHouse>(), Times.Never);
+            _repository.Verify(x =>
+                x.Update(It.IsAny<DataModelHouse>()), Times.Never);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
+        }
+        
+        [Fact]
+        public async Task UpdateHouse_Should_Throw_ArgumentException_When_Id_Is_Empty()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
+
+            var update = new House.Update()
+            {
+                Area = 5,
+                Color = "Brown",
+                Name = "SomeNewName"
+            };
+            
+            //Act + Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+                await _houseService.UpdateHouse(update, Guid.Empty));
+
+            _repository.Verify(x => x.Get<DataModelHouse>(), Times.Never);
+            _repository.Verify(x =>
+                x.Update(It.IsAny<DataModelHouse>()), Times.Never);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
+        }
+
+        [Fact]
+        public async Task UpdateHouse_Should_Update_Entity_When_Update_Definition_Is_Valid()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
+
+            var update = new House.Update()
+            {
+                Area = 5,
+                Color = "Brown",
+                Name = "SomeNewName"
+            };
+
+            var seededHouse = Houses.House2;
+
+            //Act
+            await _houseService.UpdateHouse(update, seededHouse.Id);
+
+            //Assert
+            _repository.Verify(x => x.Get<DataModelHouse>(), Times.Once);
+            _repository.Verify(x =>
+                x.Update(It.Is<DataModelHouse>(house =>
+                    house.Area == update.Area &&
+                    house.Color == update.Color &&
+                    house.Name == update.Name &&
+                    seededHouse.Rooms.Count == house.Rooms.Count)), Times.Once);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+        
+        [Fact]
+        public async Task RemoveHouseById_Should_Throw_ArgumentException_When_Id_Is_Empty()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Remove(It.IsAny<DataModelHouse>()));
+
+            //Act + Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+                await _houseService.RemoveHouseById(Guid.Empty));
+
+            _repository.Verify(x => x.Get<DataModelHouse>(), Times.Never);
+            _repository.Verify(x =>
+                x.Update(It.IsAny<DataModelHouse>()), Times.Never);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
+        }
+        
+        [Fact]
+        public async Task RemoveHouseById_Should_Throw_KeyNotFoundException_When_Entity_Not_Found()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Remove(It.IsAny<DataModelHouse>()));
+
+            //Act + Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+                await _houseService.RemoveHouseById(Guid.NewGuid()));
+
+            _repository.Verify(x => x.Get<DataModelHouse>(), Times.Once);
+            _repository.Verify(x =>
+                x.Remove(It.IsAny<DataModelHouse>()), Times.Never);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
+        }
+        
+        [Fact]
+        public async Task RemoveHouseById_Should_Call_Remove_On_Repository_To_Remove_Entity()
+        {
+            //Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+
+            _repository.Setup(x => x.Remove(It.IsAny<DataModelHouse>()));
+
+            //Act + Assert
+            await _houseService.RemoveHouseById(Houses.House1.Id);
+
+            _repository.Verify(x => x.Get<DataModelHouse>(), Times.Once);
+            _repository.Verify(x =>
+                x.Remove(It.Is<DataModelHouse>(house=>house == Houses.House1)), Times.Once);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task CreateHouse_Should_Use_Repo_To_Store_Entity()
+        {
+            //Arrange
+            _repository.Setup(x => x.Add(It.IsAny<DataModelHouse>()));
+            var houseRequest = new House.Request()
+            {
+                Area = 5,
+                Color = "Brown",
+                Name = "SomeNewName"
+            };
+            
+            //Act
+            await _houseService.CreateHouse(houseRequest);
+
+            //Assert
+            _repository.Verify(x =>
+                x.Add(It.Is<DataModelHouse>(house=>house.Area == houseRequest.Area &&
+                                               house.Color == houseRequest.Color &&
+                                               house.Name == houseRequest.Name)), Times.Once);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public void CreateHouse_Should_Throw_ArgumentNullException_When_Request_IsNull()
+        {
+            //Act + Assert
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _houseService.CreateHouse(null));
+            
+            _repository.Verify(x =>
+                x.Add(It.IsAny<DataModelHouse>()),Times.Never);
+            _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
+        }
     }
 }
