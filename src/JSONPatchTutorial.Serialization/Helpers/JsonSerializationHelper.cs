@@ -5,19 +5,16 @@ using System.Threading.Tasks;
 
 namespace JSONPatchTutorial.Serialization.Helpers
 {
-    public class JsonSerializationHelper
+    public static class JsonSerializationHelper
     {
         public static ValueTask<T> DeserializeJsonFromStream<T>(Stream stream, JsonSerializerOptions options = default, CancellationToken cancellationToken = default)
         {
-            if (!(stream is {CanRead: true} json))
-                return default;
-
-            return JsonSerializer.DeserializeAsync<T>(json, options, cancellationToken);
+            return stream is not {CanRead: true} json ? default : JsonSerializer.DeserializeAsync<T>(json, options, cancellationToken);
         }
 
         public static Task<string> StreamToStringAsync(Stream stream)
         {
-            if (!(stream is {CanRead: true})) return Task.FromResult<string>(null);
+            if (stream is not {CanRead: true}) return Task.FromResult<string>(null);
             
             using var sr = new StreamReader(stream);
             return sr.ReadToEndAsync();

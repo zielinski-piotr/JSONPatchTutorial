@@ -38,7 +38,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -60,7 +60,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -83,7 +83,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -105,7 +105,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -127,7 +127,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -150,7 +150,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -174,7 +174,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -197,7 +197,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -223,7 +223,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -242,7 +242,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -268,7 +268,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Update(It.IsAny<DataModelHouse>()));
 
@@ -300,7 +300,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Remove(It.IsAny<DataModelHouse>()));
 
@@ -319,7 +319,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Remove(It.IsAny<DataModelHouse>()));
 
@@ -338,7 +338,7 @@ namespace JSONPatchTutorial.Service.Tests
         {
             //Arrange
             _repository.Setup(x => x.Get<DataModelHouse>())
-                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock().Object);
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
 
             _repository.Setup(x => x.Remove(It.IsAny<DataModelHouse>()));
 
