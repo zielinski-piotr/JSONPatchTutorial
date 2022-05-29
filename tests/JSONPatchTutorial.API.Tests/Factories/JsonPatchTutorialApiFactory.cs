@@ -27,7 +27,7 @@ namespace JSONPatchTutorial.API.Tests.Factories
                 }
                 catch (Exception ex)
                 {
-                    var logger = scopedServices.GetRequiredService<ILogger<HouseControllerTests>>();
+                    var logger = scopedServices.GetRequiredService<ILogger<HouseControllerIntegrationTests>>();
                     logger.LogError(ex, "An error occurred seeding " +
                                         "the database with test messages. Error: {Message}",
                         ex.Message);

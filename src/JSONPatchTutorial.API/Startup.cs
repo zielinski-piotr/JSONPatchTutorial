@@ -16,6 +16,7 @@ namespace JsonPatchTutorial.API
     public class Startup
     {
         private readonly string _connectionString;
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly SqliteConnection _keepAliveConnection;
 
         public Startup()

@@ -38,7 +38,7 @@ namespace JsonPatchTutorial.API.Controllers
             catch (Exception e)
             {
                 _logger.LogCritical(e, $"There was a fatal error while executing {nameof(GetHouses)}");
-                throw;
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -60,10 +60,15 @@ namespace JsonPatchTutorial.API.Controllers
                 _logger.LogError(e, $"There was an error while executing {nameof(GetHouseById)}");
                 return NotFound();
             }
+            catch (ArgumentException e)
+            {
+                _logger.LogError(e, $"There was an error while executing {nameof(GetHouseById)}");
+                return BadRequest();
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, $"There was an error while executing {nameof(GetHouseById)}");
-                throw;
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -100,7 +105,7 @@ namespace JsonPatchTutorial.API.Controllers
             catch (Exception e)
             {
                 _logger.LogCritical(e, $"There was a fatal error while executing {nameof(PatchHouse)}");
-                throw;
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 
             return Accepted();
@@ -133,7 +138,7 @@ namespace JsonPatchTutorial.API.Controllers
             catch (Exception e)
             {
                 _logger.LogCritical(e, $"There was a fatal error while executing {nameof(UpdateHouse)}");
-                throw;
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 
             return Accepted();
@@ -141,6 +146,7 @@ namespace JsonPatchTutorial.API.Controllers
 
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemoveHouse(Guid id)
@@ -165,7 +171,7 @@ namespace JsonPatchTutorial.API.Controllers
             catch (Exception e)
             {
                 _logger.LogCritical(e, $"There was a fatal error while executing {nameof(RemoveHouse)}");
-                throw;
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
 
             return Accepted();
@@ -191,15 +197,10 @@ namespace JsonPatchTutorial.API.Controllers
                 _logger.LogError(e, $"There was an error while executing {nameof(RemoveHouse)}");
                 return BadRequest();
             }
-            catch (KeyNotFoundException e)
-            {
-                _logger.LogError(e, $"There was an error while executing {nameof(RemoveHouse)}");
-                return NotFound();
-            }
             catch (Exception e)
             {
                 _logger.LogCritical(e, $"There was a fatal error while executing {nameof(RemoveHouse)}");
-                throw;
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
     }

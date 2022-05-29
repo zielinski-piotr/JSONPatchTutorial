@@ -23,6 +23,8 @@ namespace JSONPatchTutorial.Service.Tests
 
         private const string NewStreetName = "New Street";
 
+        public static IEnumerable<object[]> SeededHouses => Houses.GetSeededHouses().Select(x => new object[] {x});
+
         public HouseServiceTests()
         {
             _repository = new Mock<IRepository>();
@@ -33,6 +35,88 @@ namespace JSONPatchTutorial.Service.Tests
             _repository.Setup(x => x.SaveChangesAsync());
         }
 
+        #region GetHouseById_Should
+
+        [Theory]
+        [MemberData(nameof(SeededHouses))]
+        public async Task GetHouseById_Should_Return_House(DataModelHouse seededHouse)
+        {
+            // Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
+
+            // Act
+            var house = await _houseService.GetHouseById(seededHouse.Id);
+
+            // Assert
+            Assert.Equal(seededHouse.Id, house.Id);
+            Assert.Equal(seededHouse.Name, house.Name);
+            Assert.Equal(seededHouse.Color, house.Color);
+            Assert.Equal(seededHouse.Rooms.Count, house.Rooms.Count());
+        }
+
+        [Fact]
+        public async Task GetHouseById_Should_Throw_NotFoundException_WhenHouseNotFound()
+        {
+            // Arrange
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(Houses.GetSeededHouses().AsQueryable().BuildMock());
+
+            // Act + Assert
+            var exception = await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _houseService.GetHouseById(Guid.NewGuid()));
+            Assert.NotNull(exception);
+        }
+        
+        [Fact]
+        public async Task GetHouseById_Should_Pass_Exception_Further()
+        {
+            // Arrange
+            var originalException = new Exception();
+            
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Throws(originalException);
+
+            // Act + Assert
+            var exception = await Assert.ThrowsAsync<Exception>(async () => await _houseService.GetHouseById(Guid.NewGuid()));
+            Assert.Equal(originalException, exception);
+        }
+        #endregion
+
+        #region GetHouses_Should
+
+        [Fact]
+        public async Task GetHouses_Should_Return_All_Houses()
+        {
+            // Arrange
+            var queryableHouses = Houses.GetSeededHouses().AsQueryable();
+            var expectedHouses = queryableHouses.ToList();
+            
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Returns(queryableHouses.BuildMock());
+
+            // Act
+            var houses = await _houseService.GetHouses();
+            
+            // Assert
+            Assert.Equal(expectedHouses.Count, houses.Count());
+        }
+        
+        [Fact]
+        public async Task GetHouses_Should_Pass_Exception_Further()
+        {
+            // Arrange
+            var originalException = new Exception();
+            
+            _repository.Setup(x => x.Get<DataModelHouse>())
+                .Throws(originalException);
+
+            // Act + Assert
+            var exception = await Assert.ThrowsAsync<Exception>(async () => await _houseService.GetHouses());
+            Assert.Equal(originalException, exception);
+        }
+        #endregion
+        
+        #region UpdateHouse_Should With JsonPatch
         [Fact]
         public async Task UpdateHouse_Should_UpdateEntity_Successfully()
         {
@@ -191,7 +275,9 @@ namespace JSONPatchTutorial.Service.Tests
                 x.Update(It.IsAny<DataModelHouse>()), Times.Never);
             _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
         }
+        #endregion
 
+        #region UpdateHouse_Should without JsonPatch
         [Fact]
         public async Task UpdateHouse_Should_Throw_KeyNotFoundException_When_Updating_Not_Existing_Entity()
         {
@@ -294,7 +380,9 @@ namespace JSONPatchTutorial.Service.Tests
                     seededHouse.Rooms.Count == house.Rooms.Count)), Times.Once);
             _repository.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
+        #endregion
         
+        #region RemoveHouseById_Should
         [Fact]
         public async Task RemoveHouseById_Should_Throw_ArgumentException_When_Id_Is_Empty()
         {
@@ -350,7 +438,9 @@ namespace JSONPatchTutorial.Service.Tests
                 x.Remove(It.Is<DataModelHouse>(house=>house == Houses.House1)), Times.Once);
             _repository.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
+        #endregion
 
+        #region CreateHouse_Should
         [Fact]
         public async Task CreateHouse_Should_Use_Repo_To_Store_Entity()
         {
@@ -384,5 +474,6 @@ namespace JSONPatchTutorial.Service.Tests
                 x.Add(It.IsAny<DataModelHouse>()),Times.Never);
             _repository.Verify(x => x.SaveChangesAsync(), Times.Never);
         }
+        #endregion
     }
 }
